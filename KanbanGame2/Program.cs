@@ -11,6 +11,7 @@ namespace KanbanGame2
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World.");
+            Console.WriteLine("Hello world2.");
         }
     }
 }
