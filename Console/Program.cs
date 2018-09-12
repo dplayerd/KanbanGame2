@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.IO;
-using System.Net;
 
-namespace KanbanGame2
+namespace Console
 {
     class Program
     {
         static void Main(string[] args)
         {
-          DeserializeObject();
+            DeserializeObject();
         }
+
         public static void DeserializeObject()
         {
             //JSON字串
@@ -25,10 +26,12 @@ namespace KanbanGame2
 
             //轉成物件
             Rootobject items = JsonConvert.DeserializeObject<Rootobject>(content);
-            
-            
+
+
         }
-        
+     
+
+
         public class Rootobject
         {
             public Data data { get; set; }
@@ -54,6 +57,5 @@ namespace KanbanGame2
             public string 車站緯度 { get; set; }
             public string 車站經度 { get; set; }
         }
-
     }
 }
