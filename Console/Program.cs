@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static KanbanGameConsole.Stations;
 
 namespace KanbanGameConsole
 {
@@ -33,6 +34,9 @@ namespace KanbanGameConsole
             tb.AddRow("----", "---------", "---------------", "---------------", "---------", "---------");
             foreach (var item in items.data.data)
             {
+                //Stations.cs is error code
+                //tb.AddRow(item.seq, item.StationId, item.StationChineseName, item.StationEnglishName, item.StationLatitude, item.StationLongitude);
+
                 tb.AddRow(item.seq, item.車站編號, item.車站中文名稱, item.車站英文名稱, item.車站緯度, item.車站經度);
             }
             Console.Write(tb.Output());
@@ -40,8 +44,6 @@ namespace KanbanGameConsole
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
-
-
 
         public class Rootobject
         {
