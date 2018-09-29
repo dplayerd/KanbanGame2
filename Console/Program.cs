@@ -11,11 +11,148 @@ using static KanbanGameConsole.Stations;
 
 namespace KanbanGameConsole
 {
-    class Program
+    // 1.宣告 delegate -- 定義簽章:
+    delegate double MathAction(double num);
+
+    public class Program
     {
+
         static void Main(string[] args)
         {
+            SayXmas();
+
             DeserializeObject();
+            testdelegate();
+            testaction();
+            testaction2();
+            testFunc();
+        }
+
+        private static void SayXmas()
+        {
+            Holiday _holiday= new Holiday();
+            Action<string> action2 = new Action<string>(MerryXmas);
+            action2(_holiday.SayXmas());
+        }
+        static void MerryXmas(string s)
+        {
+            Console.WriteLine(s);
+        }
+        protected static DateTime GetToday()
+        {
+            return DateTime.Today;
+        }
+
+        //Func必須傳回值
+        private static void testFunc()
+        {
+            //藉由Func<T,TResult>委派執行實體化
+            Func<int, string> convertMethod = UppercaseString;
+            Console.WriteLine(convertMethod(122233));
+
+            Func<int, int, int> func = new Func<int, int, int>(Add);
+            int res = func(100, 200);
+            Console.WriteLine(res);
+        }
+        private static string UppercaseString(int inputString)
+        {
+            return inputString.ToString();
+        }
+        private static int Add(int x, int y)
+        {
+            return x = y;
+        }
+
+
+        //Action無回傳值
+        private static void testaction()
+        {//此範例脫褲子放屁，根本不用Action
+            Name testName = new Name("Koani");
+
+            //2.實體化Action並指派方法
+            Action showMethod = testName.DisplayToConsole;
+            showMethod();
+        }
+        public class Name
+        {
+            private string instanceName;
+            public Name(string name)
+            {
+                this.instanceName = name;
+            }
+            public void DisplayToConsole()
+            {
+                Console.WriteLine(this.instanceName);
+            }
+            //1.建立沒有回傳值的方法
+            public void DisplayToWindow()
+            {
+                Console.WriteLine(this.instanceName);
+            }
+        }
+
+        private static void testaction2()
+        {
+            Action action = new Action(M1);
+            action();
+
+            Action<string> action2 = new Action<string>(SayHello);
+            action2("Riva");
+
+            Action<string, int> action3 = new Action<string, int>(SayHello);
+            action3("Riva", 3);
+        }
+        static void M1()
+        {
+            Console.WriteLine("M1 is called.");
+        }
+        static void SayHello(string name)
+        {
+            Console.WriteLine("I'm {0}", name); //Console.WriteLine($"I'm {name}"); C# 6
+        }
+        static void SayHello(string name, int round)
+        {
+            for (int i = 0; i < round; i++)
+            {
+                Console.WriteLine("Hello, {0}", name);
+            }
+        }
+
+
+
+        //delegate
+        static double Double(double input)
+        {// 2.一般的方法跟delegate的簽章相符:
+            return input * 2;
+        }
+
+        private static void testdelegate()
+        {
+            // 3.藉由方法名稱 Instantiate delegate
+            MathAction ma = Double;
+
+            // 4.呼叫 delegate ma
+            double multByTwo = ma(4.5);
+            Console.WriteLine("multByTwo: {0}", multByTwo);
+
+            // 3.藉由匿名方法 Instantiate delegate
+            MathAction ma2 = delegate (double input)
+            {
+                return input * input;
+            };
+            // 4.呼叫 delegate square
+            double square = ma2(5);
+            Console.WriteLine("square: {0}", square);
+
+            // 3.藉由lambda expression Instantiate delegate
+            MathAction ma3 = s => s * s * s;
+            // 4.呼叫 delegate cube
+            double cube = ma3(4.375);
+            Console.WriteLine("cube: {0}", cube);
+            // 輸出:
+            // multByTwo: 9
+            // square: 25
+            // cube: 83.740234375
         }
 
         public static void DeserializeObject()
@@ -45,143 +182,9 @@ namespace KanbanGameConsole
             Console.ReadKey();
         }
 
-        public class Rootobject
-        {
-            public Data data { get; set; }
-            public string id { get; set; }
-            public object message { get; set; }
-            public bool success { get; set; }
-        }
 
-        public class Data
-        {
-            public Datum[] data { get; set; }
-            public string id { get; set; }
-            public object message { get; set; }
-            public bool success { get; set; }
-        }
 
-        public class Datum
-        {
-            public int seq { get; set; }
-            public string 車站編號 { get; set; }
-            public string 車站中文名稱 { get; set; }
-            public string 車站英文名稱 { get; set; }
-            public string 車站緯度 { get; set; }
-            public string 車站經度 { get; set; }
-        }
 
-        public interface ITextRow
-        {
-            String Output();
-            void Output(StringBuilder sb);
-            Object Tag { get; set; }
-        }
-
-        public class TableBuilder : IEnumerable<ITextRow>
-        {
-            protected class TextRow : List<String>, ITextRow
-            {
-                protected TableBuilder owner = null;
-                public TextRow(TableBuilder Owner)
-                {
-                    owner = Owner;
-                    if (owner == null) throw new ArgumentException("Owner");
-                }
-                public String Output()
-                {
-                    StringBuilder sb = new StringBuilder();
-                    Output(sb);
-                    return sb.ToString();
-                }
-                public void Output(StringBuilder sb)
-                {
-                    sb.AppendFormat(owner.FormatString, this.ToArray());
-                }
-                public Object Tag { get; set; }
-            }
-
-            public String Separator { get; set; }
-
-            protected List<ITextRow> rows = new List<ITextRow>();
-            protected List<int> colLength = new List<int>();
-
-            public TableBuilder()
-            {
-                Separator = "  ";
-            }
-
-            public TableBuilder(String separator)
-                : this()
-            {
-                Separator = separator;
-            }
-
-            public ITextRow AddRow(params object[] cols)
-            {
-                TextRow row = new TextRow(this);
-                foreach (object o in cols)
-                {
-                    String str = o.ToString().Trim();
-                    row.Add(str);
-                    if (colLength.Count >= row.Count)
-                    {
-                        int curLength = colLength[row.Count - 1];
-                        if (str.Length > curLength) colLength[row.Count - 1] = str.Length;
-                    }
-                    else
-                    {
-                        colLength.Add(str.Length);
-                    }
-                }
-                rows.Add(row);
-                return row;
-            }
-
-            protected String _fmtString = null;
-            public String FormatString
-            {
-                get
-                {
-                    if (_fmtString == null)
-                    {
-                        String format = "";
-                        int i = 0;
-                        foreach (int len in colLength)
-                        {
-                            format += String.Format("{{{0},-{1}}}{2}", i++, len, Separator);
-                        }
-                        format += "\r\n";
-                        _fmtString = format;
-                    }
-                    return _fmtString;
-                }
-            }
-
-            public String Output()
-            {
-                StringBuilder sb = new StringBuilder();
-                foreach (TextRow row in rows)
-                {
-                    row.Output(sb);
-                }
-                return sb.ToString();
-            }
-
-            #region IEnumerable Members
-
-            public IEnumerator<ITextRow> GetEnumerator()
-            {
-                return rows.GetEnumerator();
-            }
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return rows.GetEnumerator();
-            }
-
-            #endregion
-        }
 
     }
 }

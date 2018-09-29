@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Holiday.cs" />
+    <Compile Include="Model\Cjson.cs" />
+    <Compile Include="Function\Tools.cs" />
     <Compile Include="Stations.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
