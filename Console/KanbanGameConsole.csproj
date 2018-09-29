@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationService.cs" />
     <Compile Include="Holiday.cs" />
     <Compile Include="Model\Cjson.cs" />
     <Compile Include="Function\Tools.cs" />
