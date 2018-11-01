@@ -8,15 +8,16 @@ namespace KanbanGameConsole
 {
     public class AuthenticationService
     {
+        protected internal ProfileDao ProfileDao = new ProfileDao();
+        protected internal RsaTokenDao RsaToken = new RsaTokenDao();
+
         public bool IsValid(string account, string passcode)
         {
             // 根據 account 取得自訂密碼
-            var profileDao = new ProfileDao();
-            var passwordFromDao = profileDao.GetPassword(account);
+            var passwordFromDao = ProfileDao.GetPassword(account);
 
             // 根據 account 取得 RSA token 目前的亂數
-            var rsaToken = new RsaTokenDao();
-            var randomCode = rsaToken.GetRandom(account);
+            var randomCode = RsaToken.GetRandom(account);
 
             // 驗證傳入的 password 是否等於自訂密碼 + RSA token亂數
             var validPassword = passwordFromDao + randomCode;
