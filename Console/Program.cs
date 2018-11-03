@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.IO;        
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,7 +19,7 @@ namespace KanbanGameConsole
 
         static void Main(string[] args)
         {
-            SayXmas();
+            //SayXmas();
 
             DeserializeObject();
             testdelegate();
