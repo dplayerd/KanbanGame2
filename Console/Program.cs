@@ -16,6 +16,8 @@ namespace KanbanGameConsole
         static void Main(string[] args)
         {
             DeserializeObject();
+
+            //Do Merge
         }
 
         public static void DeserializeObject()
