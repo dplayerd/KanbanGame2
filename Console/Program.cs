@@ -21,6 +21,8 @@ namespace KanbanGameConsole
         {
             //SayXmas();
 
+            //I am Master
+
             DeserializeObject();
             testdelegate();
             testaction();
