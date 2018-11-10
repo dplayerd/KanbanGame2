@@ -19,7 +19,7 @@ namespace KanbanGameConsole
 
         static void Main(string[] args)
         {
-            //SayXmas();
+            SayXmas();
 
             DeserializeObject();
             testdelegate();
